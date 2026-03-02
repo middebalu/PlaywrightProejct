@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PlayWrightDemo
 {
+    // Broweser steup
     internal class BrowserManager
     {
         private IPlaywright playwright;
