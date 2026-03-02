@@ -42,8 +42,8 @@ namespace PlayWrightDemo
             SwaglabHome swaglabHome = new SwaglabHome(page);
             await swagLabLoginPage.LoginAsync("standard_user", "secret_sauce");
             Assert.That(await swaglabHome.getPageLogo(), Does.Match("Swag Labs1"));
-           // await Expect(page).ToHaveTitleAsync("Swag Labs");
-           // ILocator usernameLocator = page.GetByPlaceholder("Username");
+            await Expect(page).ToHaveTitleAsync("Swag Labs");
+            ILocator usernameLocator = page.GetByPlaceholder("Username");
            // await Expect(usernameLocator).ToBeEnabledAsync();
            // await usernameLocator.TypeAsync("username");
            // await usernameLocator.ClickAsync();
