@@ -9,11 +9,14 @@ public class WithXpath
    
     IPage page;
     BrowserManager browserManager;
+    IBrowserContext context;
   
     [SetUp]
     public async Task Setup()
     {
         browserManager = new BrowserManager();
+        await browserManager.InitiBrowserAsync("chrome");
+        context = await browserManager.getBrowserContxtAsync();
         page = await browserManager.getPageAsync();
 
      }
@@ -247,6 +250,17 @@ public class WithXpath
         await page.Mouse.MoveAsync(xAxis, sliderDim.Y);
         String actualRight=await sliderHandl.Nth(1).GetAttributeAsync("style");
         Assert.That(actualRight, Does.Contain("70%"));
+
+    }
+    [Test]
+    public async Task ShadowElements()
+    {
+        await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
+        ILocator shadowElement = page.Locator("//div[@id='shadow_host']");
+        ILocator input =shadowElement.Locator("input[type='text']");
+        await input.FillAsync("testing");
+        String inputContent=await input.TextContentAsync();
+        Assert.That(inputContent, Does.Match("testing"));
 
     }
 
