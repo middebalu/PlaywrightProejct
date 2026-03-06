@@ -6,6 +6,9 @@ namespace PlayWrightDemo
 {
     internal class AmazonTest
     {
-       
+       public void test()
+        {
+            Console.WriteLine("Testing");
+        }
     }
 }
