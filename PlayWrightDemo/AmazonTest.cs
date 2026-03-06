@@ -9,6 +9,7 @@ namespace PlayWrightDemo
        public void test()
         {
             Console.WriteLine("Testing");
+            Console.WriteLine("Added new line");
         }
     }
 }
