@@ -8,6 +8,7 @@ namespace PlayWrightDemo
     internal class GooglePage
     {                          
         IPage page;
+        // this is intialize page
         public GooglePage(IPage page)
         {
             this.page = page;
