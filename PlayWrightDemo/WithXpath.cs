@@ -249,6 +249,7 @@ public class WithXpath
         await page.Mouse.DownAsync();
         await page.Mouse.MoveAsync(xAxis, sliderDim.Y);
         String actualRight=await sliderHandl.Nth(1).GetAttributeAsync("style");
+        //verify that sider moved to 70%
         Assert.That(actualRight, Does.Contain("70%"));
 
     }
