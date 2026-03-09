@@ -365,3 +365,4 @@ FodyWeavers.xsd
 #iginore bin
 PlayWrightDemo/bin/
 PlayWrightDemo/obj/
+*.slnx
