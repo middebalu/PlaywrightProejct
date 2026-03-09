@@ -15,6 +15,7 @@ namespace PlayWrightDemo
             this.page = page;
             pageLogo = page.Locator(".app_logo");
             productTitle = page.Locator(".title");
+            Console.WriteLine("Rebase");
 
         }
         public async Task<String> getPageLogo()
