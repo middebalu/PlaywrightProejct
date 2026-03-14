@@ -6,11 +6,11 @@ namespace PlayWrightDemo;
 
 public class WithXpath
 {
-   
+
     IPage page;
     BrowserManager browserManager;
     IBrowserContext context;
-  
+
     [SetUp]
     public async Task Setup()
     {
@@ -19,14 +19,36 @@ public class WithXpath
         context = await browserManager.getBrowserContxtAsync();
         page = await browserManager.getPageAsync();
 
-     }
+
+    }
 
     [Test]
     public async Task InputTest()
     {
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
 
-        await page.Locator("//textarea").FillAsync("Automatio testing with playwright");
+
+        try
+        {
+            await page.Locator("//textarea").FillAsync("Automatio testing with playwright");
+        }
+        catch (TimeoutException e)
+        {
+            throw new DownloadTextAriaException("TextAraia welement not avaliable or incorrect locator");
+        }
+        catch (ApplicationException e)
+        {
+
+        }
+        catch (Exception e)
+        {
+
+        }
+        finally   // optional block
+        {
+            Console.WriteLine("I am in final block");
+        }
+
         await page.Locator("//button[@id='generatePdf']").ClickAsync();
 
         //tagName[@attribute='value' or @attribute1=value]   - Relative -- attrubute
@@ -48,7 +70,7 @@ public class WithXpath
         //*[@id='laptops']/*[@class]   -- ignoreing the tag
 
 
-       // contains(@attribute,'text')
+        // contains(@attribute,'text')
         /// tagname[@attribute = 'value']/tagname/ 
 
         //div -body - intpu-text
@@ -62,7 +84,7 @@ public class WithXpath
         ILocator cssId = page.Locator("button#generateTxt");
         ILocator xapthid1 = page.Locator("//button[@id='generateTxt']");
         Console.WriteLine(await cssId.TextContentAsync());
-        IReadOnlyList<ILocator> bbbutns= await page.Locator("//button[@id]").AllAsync();
+        IReadOnlyList<ILocator> bbbutns = await page.Locator("//button[@id]").AllAsync();
         foreach (var item in bbbutns)
         {
             Console.WriteLine(await item.TextContentAsync());
@@ -89,11 +111,11 @@ public class WithXpath
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
         ILocator bookTable = page.Locator("//table[@name='BookTable']");
         IReadOnlyList<ILocator> tableRows = await bookTable.Locator("//tr").AllAsync();
-        for (int i = 0; i <  tableRows.Count; i++)
+        for (int i = 0; i < tableRows.Count; i++)
         {
             Console.WriteLine(await tableRows[i].TextContentAsync());
         }
-       
+
     }
     [Test]
     public async Task printTableCells()
@@ -114,7 +136,7 @@ public class WithXpath
             Console.WriteLine();
         }
 
-        
+
     }
     [Test]
     public async Task writeIntoBookObject()
@@ -124,7 +146,7 @@ public class WithXpath
         IReadOnlyList<ILocator> tableRows = await bookTable.Locator("//tr[position()>1]").AllAsync();
         List<Book> books = new List<Book>();
 
-       
+
         foreach (ILocator row in tableRows)   // //table[@name='BookTable']//tr[position()>1]  this locator to skip first tr which has table header
         {
             IReadOnlyList<ILocator> cells = await row.Locator("//td").AllAsync();
@@ -149,24 +171,24 @@ public class WithXpath
     public async Task TableByGetByRole()
     {
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
-        ILocator table=page.Locator("table[name='BookTable']");
+        ILocator table = page.Locator("table[name='BookTable']");
         IReadOnlyList<String> tableData = await table.AllTextContentsAsync();
         ILocator tableHeader = table.GetByRole(AriaRole.Columnheader);
-        for(int i = 0; i < await tableHeader.CountAsync(); i++)
+        for (int i = 0; i < await tableHeader.CountAsync(); i++)
         {
             Console.WriteLine(await tableHeader.Nth(i).TextContentAsync());
         }
         IReadOnlyList<ILocator> tableHeaders = await table.GetByRole(AriaRole.Columnheader).AllAsync();
-        foreach(ILocator hedaerCell in tableHeaders)
+        foreach (ILocator hedaerCell in tableHeaders)
         {
             Console.WriteLine(await hedaerCell.TextContentAsync());
         }
-        
+
         ILocator tablerows = table.GetByRole(AriaRole.Row);
-        for(int i=1;i<await tablerows.CountAsync(); i++)
+        for (int i = 1; i < await tablerows.CountAsync(); i++)
         {
-            ILocator cells=tablerows.Nth(i).GetByRole(AriaRole.Cell);
-            for(int j = 0;  j < await cells.CountAsync(); j++)
+            ILocator cells = tablerows.Nth(i).GetByRole(AriaRole.Cell);
+            for (int j = 0; j < await cells.CountAsync(); j++)
             {
                 Console.Write(" " + await cells.Nth(j).TextContentAsync());
             }
@@ -174,7 +196,7 @@ public class WithXpath
         }
         Console.WriteLine(await tablerows.CountAsync());
         Console.WriteLine(await tableHeader.Nth(0).AllInnerTextsAsync());
-       
+
 
     }
 
@@ -194,14 +216,14 @@ public class WithXpath
         ILocator target = page.Locator("div[id='droppable']");
         await source.ScrollIntoViewIfNeededAsync();
         //await source.DragToAsync(target);  -- with webelement
-        LocatorBoundingBoxResult sourceBoundBox=await   source.BoundingBoxAsync();
+        LocatorBoundingBoxResult sourceBoundBox = await source.BoundingBoxAsync();
         LocatorBoundingBoxResult targetBoundBox = await target.BoundingBoxAsync();
         //x+width/2 , y+height/2
         await page.Mouse.MoveAsync(sourceBoundBox.X + sourceBoundBox.Width / 2, sourceBoundBox.Y + sourceBoundBox.Height / 2);
         await page.Mouse.DownAsync();
-        await page.Mouse.MoveAsync(targetBoundBox.X + targetBoundBox.Width / 2, targetBoundBox.Y + targetBoundBox.Height / 2,new MouseMoveOptions{Steps=50});
+        await page.Mouse.MoveAsync(targetBoundBox.X + targetBoundBox.Width / 2, targetBoundBox.Y + targetBoundBox.Height / 2, new MouseMoveOptions { Steps = 50 });
         await page.Mouse.UpAsync();
-        
+
         Console.WriteLine();
         // Locate slider and handles
         var slider = page.Locator("#slider-range");
@@ -215,7 +237,7 @@ public class WithXpath
         var handleBox = await firstHandle.BoundingBoxAsync();
 
         // Calculate target position (example: 30%)
-        double  targetX = sliderBox.X + (sliderBox.Width * 0.40);
+        double targetX = sliderBox.X + (sliderBox.Width * 0.40);
         double centerY = handleBox.Y + handleBox.Height / 2;
 
         // Drag
@@ -231,12 +253,12 @@ public class WithXpath
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
         ILocator sliderRange = page.Locator("div.ui-slider");
         ILocator sliderHandl = page.Locator("//span[contains(@class,'ui-slider-handle')]");
-      //  await sliderRange.ScrollIntoViewIfNeededAsync();
-        var sliderDim=await sliderRange.BoundingBoxAsync();
+        //  await sliderRange.ScrollIntoViewIfNeededAsync();
+        var sliderDim = await sliderRange.BoundingBoxAsync();
         float xAxis = sliderDim.X + sliderDim.Width * 0.40f;
         //left slider
         var sliderHandelDim = await sliderHandl.Nth(0).BoundingBoxAsync();
-        await page.Mouse.MoveAsync(sliderHandelDim.X+sliderHandelDim.Width/2, sliderHandelDim.Y+sliderHandelDim.Height/2);
+        await page.Mouse.MoveAsync(sliderHandelDim.X + sliderHandelDim.Width / 2, sliderHandelDim.Y + sliderHandelDim.Height / 2);
         await page.Mouse.DownAsync();
         await page.Mouse.MoveAsync(xAxis, sliderDim.Y);
         await page.Mouse.UpAsync();
@@ -248,7 +270,7 @@ public class WithXpath
         await page.Mouse.MoveAsync(sliderHandelRightDim.X + sliderHandelRightDim.Width / 2, sliderHandelRightDim.Y + sliderHandelRightDim.Height / 2);
         await page.Mouse.DownAsync();
         await page.Mouse.MoveAsync(xAxis, sliderDim.Y);
-        String actualRight=await sliderHandl.Nth(1).GetAttributeAsync("style");
+        String actualRight = await sliderHandl.Nth(1).GetAttributeAsync("style");
         //verify that sider moved to 70%
         Assert.That(actualRight, Does.Contain("70%"));
 
@@ -258,9 +280,9 @@ public class WithXpath
     {
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
         ILocator shadowElement = page.Locator("//div[@id='shadow_host']");
-        ILocator input =shadowElement.Locator("input[type='text']");
+        ILocator input = shadowElement.Locator("input[type='text']");
         await input.FillAsync("testing");
-        String inputContent=await input.TextContentAsync();
+        String inputContent = await input.TextContentAsync();
         Assert.That(inputContent, Does.Match("testing"));
 
     }
