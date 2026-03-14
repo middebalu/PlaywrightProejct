@@ -14,7 +14,7 @@ public class WithXpath
     [SetUp]
     public async Task Setup()
     {
-        // browserManager = new BrowserManager();
+        browserManager = new BrowserManager();
         await browserManager.InitiBrowserAsync("chrome");
         context = await browserManager.getBrowserContxtAsync();
         page = await browserManager.getPageAsync();
