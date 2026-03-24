@@ -37,27 +37,16 @@ namespace PlayWrightDemo
         [Test]
         public async Task SwaglabDemoTest()
         {
+            page.SetDefaultTimeout(60000);
             await page.GotoAsync("https://www.saucedemo.com/");
             SwagLabLoginPage swagLabLoginPage = new SwagLabLoginPage(page);
             SwaglabHome swaglabHome = new SwaglabHome(page);
             await swagLabLoginPage.LoginAsync("standard_user", "secret_sauce");
-            Assert.That(await swaglabHome.getPageLogo(), Does.Match("Swag Labs1"));
+            Assert.That(await swaglabHome.getPageLogo(), Does.Match("Swag Labs"));
             await Expect(page).ToHaveTitleAsync("Swag Labs");
             ILocator usernameLocator = page.GetByPlaceholder("Username");
-           // await Expect(usernameLocator).ToBeEnabledAsync();
-           // await usernameLocator.TypeAsync("username");
-           // await usernameLocator.ClickAsync();
-           // await page.Keyboard.DownAsync("Shift");
-           
-           //await page.Keyboard.TypeAsync("USERNAME");
-           //await page.Keyboard.PressAsync("Control+A");
-           //await page.Keyboard.UpAsync("Shift");
-           // LocatorTypeOptions type = new();
-           //// type.Delay = 3000;
-           // await page.GetByPlaceholder("Password").TypeAsync("password");
-           
-           //// await page.GetByLabel("Enter mobile number or email").TypeAsync();
-           // await page.GetByText("Login").ClickAsync();
+            string filepath = $"C:\\Users\\Administrator\\source\\repos\\PlayWrightDemo\\PlayWrightDemo\\Screenshots\\swagalablogin{DateTime.Now:yyyyMMdd_HHmmss}.png";
+            await page.ScreenshotAsync(new PageScreenshotOptions { Path= filepath,FullPage=true});
         }
         [Test]
         public async Task RoleTest()
@@ -87,6 +76,8 @@ namespace PlayWrightDemo
            
             await button.ClickAsync();
             await menuitems.ClickAsync();
+            await page.ScreenshotAsync(new PageScreenshotOptions { Path = "C:\\Users\\Administrator\\source\\repos\\PlayWrightDemo\\PlayWrightDemo\\Screenshots\\swagalablogin.png" });
+
         }
         [Test]
         public async Task ListOfElements()
