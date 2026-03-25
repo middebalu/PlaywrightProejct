@@ -44,5 +44,13 @@ namespace PlayWrightDemo
             await browser.CloseAsync();
             playwright.Dispose();
         }
+
+        public async Task TakeScreenshot()
+        {
+            if (TestContext.CurrentContext.Result.Outcome.Status != NUnit.Framework.Interfaces.TestStatus.Passed) { 
+            string filepath = $"C:\\Users\\Administrator\\source\\repos\\PlayWrightDemo\\PlayWrightDemo\\Screenshots\\{TestContext.CurrentContext.Test.MethodName}{DateTime.Now:yyyyMMdd_HHmmss}.png";
+            await page.ScreenshotAsync(new PageScreenshotOptions { Path = filepath, FullPage = true });
+        }
+        }
     }
 }

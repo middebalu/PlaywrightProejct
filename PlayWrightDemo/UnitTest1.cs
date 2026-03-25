@@ -32,21 +32,20 @@ namespace PlayWrightDemo
             await page.GotoAsync("https://google.com");
             GooglePage googlepage = new GooglePage(page);
             String title = await googlepage.GetTitleAsync();
-            Assert.That(title, Does.Match("Google"));
+            Assert.That(title, Does.Match("Kumar"));
         }
         [Test]
         public async Task SwaglabDemoTest()
         {
-            page.SetDefaultTimeout(60000);
+           // page.SetDefaultTimeout(60000);
             await page.GotoAsync("https://www.saucedemo.com/");
             SwagLabLoginPage swagLabLoginPage = new SwagLabLoginPage(page);
             SwaglabHome swaglabHome = new SwaglabHome(page);
-            await swagLabLoginPage.LoginAsync("standard_user", "secret_sauce");
-            Assert.That(await swaglabHome.getPageLogo(), Does.Match("Swag Labs"));
+            await swagLabLoginPage.LoginAsync("standard_user", "secret_sauc");
+            Assert.That(await swaglabHome.getPageLogo(), Does.Match("Swag Labs1"));
             await Expect(page).ToHaveTitleAsync("Swag Labs");
             ILocator usernameLocator = page.GetByPlaceholder("Username");
-            string filepath = $"C:\\Users\\Administrator\\source\\repos\\PlayWrightDemo\\PlayWrightDemo\\Screenshots\\swagalablogin{DateTime.Now:yyyyMMdd_HHmmss}.png";
-            await page.ScreenshotAsync(new PageScreenshotOptions { Path= filepath,FullPage=true});
+          
         }
         [Test]
         public async Task RoleTest()
@@ -54,7 +53,7 @@ namespace PlayWrightDemo
             await page.GotoAsync("https://testautomationpractice.blogspot.com/p/playwrightpractice.html#");
             ILocator button = page.GetByRole(AriaRole.Button, new PageGetByRoleOptions {NameRegex= new Regex( "Primary*")});
             ILocator menuitems = page.GetByRole(AriaRole.Menuitem, new() {Name="Home" });
-            ILocator username = page.GetByLabel("Username:");
+            ILocator username = page.GetByLabel("Usernam:");
             
             ILocator menuLocator = page.GetByRole(AriaRole.Menuitem);  //3 elements
             IReadOnlyList<string> names=await  menuLocator.AllInnerTextsAsync(); //3 string
@@ -66,7 +65,7 @@ namespace PlayWrightDemo
             
             
             
-            ILocator mouseHover = page.GetByText("Point Me");
+            ILocator mouseHover = page.GetByText("Point M");
             await mouseHover.HoverAsync();
            // await mouseHover.ScrollIntoViewIfNeededAsync();
             await username.TypeAsync("username");
@@ -76,7 +75,7 @@ namespace PlayWrightDemo
            
             await button.ClickAsync();
             await menuitems.ClickAsync();
-            await page.ScreenshotAsync(new PageScreenshotOptions { Path = "C:\\Users\\Administrator\\source\\repos\\PlayWrightDemo\\PlayWrightDemo\\Screenshots\\swagalablogin.png" });
+           
 
         }
         [Test]
@@ -291,6 +290,11 @@ namespace PlayWrightDemo
         [TearDown]
         public async Task CloseBrowser()
         {
+           
+            
+                await browserManager.TakeScreenshot();
+            
+            
             await browserManager.DisposeBrowserAynsc();
 
         }

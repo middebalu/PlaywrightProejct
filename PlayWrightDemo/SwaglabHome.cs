@@ -20,6 +20,7 @@ namespace PlayWrightDemo
         }
         public async Task<String> getPageLogo()
         {
+            
            return await  pageLogo.TextContentAsync();
         }
 

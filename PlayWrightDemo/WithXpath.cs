@@ -82,7 +82,7 @@ public class WithXpath
     {
         await page.GotoAsync("https://testautomationpractice.blogspot.com/p/download-files_25.html");
         ILocator cssId = page.Locator("button#generateTxt");
-        ILocator xapthid1 = page.Locator("//button[@id='generateTxt']");
+        ILocator xapthid1 = page.Locator("//button[@id='generateTx']");
         Console.WriteLine(await cssId.TextContentAsync());
         IReadOnlyList<ILocator> bbbutns = await page.Locator("//button[@id]").AllAsync();
         foreach (var item in bbbutns)
@@ -290,6 +290,7 @@ public class WithXpath
     [TearDown]
     public async Task Teardown()
     {
+        await browserManager.TakeScreenshot();
         await browserManager.DisposeBrowserAynsc();
     }
 }
